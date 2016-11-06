@@ -29,9 +29,9 @@ var runGames = function() {
 
     /* Log entry. */ Logger.recordExperimentInitializationStart();
 
-    /* L */ Participants.initializeFullListOfParticipants();
-
+    Participants.initializeFullListOfParticipants();
     initializeCollections(); 
+    Tasks.initializeTasks();
 
     Payouts.resetTotalPayouts(Participants.participantsQueue);
 

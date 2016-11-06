@@ -38,20 +38,23 @@ export var Tasks = {
         });
     },
 
-    initializeBatchTasks: function() {
-        for ( var i = 0; i < Session.batchNumber; i++ ) {
+    initializeBatchTasks: function(batchNumber) {
+        for ( var i = 0; i < batchNumber; i++ ) {
             this.batch_tasks[i] = [];
         }
     },
 
+    // this should be run 
     initializeTasks: function() {
+        var _batchNumber = Session.batchNumber;
         initializeTasksId();
         initializeTasksAnnotation();
-        initializeBatchTasks();
+        initializeBatchTasks(_batchNumber);
     }
 };
 
 var assignTasksToBatches = function() {
+    // each batch will have a fixed number of tasks
     for ( var i = 0; i < Session.batchNumber; i++ ) {
         Utilities.shuffle(this.tasksId);
         for ( var j = 0; j < this.numTasksEachBatch; j++ ) {

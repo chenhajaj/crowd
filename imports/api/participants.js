@@ -162,7 +162,7 @@ var assignParticipantsIntoBatches: function() {
         // assign this participant to _batchId
         var _batchId = Math.floor(i / _batchSize);
 
-        // record which batch does userId belong
+        // record which batch userId belongs
         Participants.id_batch[_id] = _batchId;
 
         ParticipantsInfo.upsert({userId: _id}, {$set: {
