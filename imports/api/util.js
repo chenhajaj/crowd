@@ -67,10 +67,10 @@ export const Utilities = {
             return 0;
         }
         return Math.sign(num);
-    }
+    },
 
-   	/* shuffle an array */ 
-	function shuffle(a) {
+    /* shuffle an array */
+    shuffle: function (a) {
 	    var j, x, i;
 	    for (i = a.length; i; i--) {
 	        j = Math.floor(Math.random() * i);
