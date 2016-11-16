@@ -2,16 +2,20 @@
  * Created by alan on 9/13/2016.
  */
 
+import {Session} from '../../api/session';
+import {Participants} from '../../api/participants'
+
 Template.scoreboard.helpers({
     "scores": function () {
-        let userid = Meteor.userId();
-        let userGroup = userGroups.find({userids: {$in: [userid]}});
-        let neighbor_users = [];
-        userGroup.forEach(function (e) {
-            neighbor_users = neighbor_users.concat(e.userids);
+        let myBatchId = Participants.id_batch[Meteor.userId()];
+        let myNeighbors = Session.batch_id[myBatchId];
+        let scores = _.map(myNeighbors, function (uid) {
+            return {
+                score: Session.weights[uid],
+                userid: uid
+            }
         });
-
-        return scoreCollection.find({userid: {$in: neighbor_users}}, {sort: {score: -1}});
+        return scores;
     },
     "myScore": function () {
         return this.userid == Meteor.userId();
