@@ -316,12 +316,6 @@ export var Logger = {
         }
     },
 
-    // CRQM3
-    recordRequestMade: function(name, newColor, requestNo) {
-        var actualNewColor = ColorMagic.deanonymizeColor(name, newColor);
-        
-        insertExperimentLogEntry("CRQM3", requestNo + "\t" + getFullPlayerIdentification(name, "nameId") + "\t" + actualNewColor);
-    },
 
     // CRQP4
     recordRequestProcessed: function(actualNewColor, name, requestNo) {
@@ -331,33 +325,7 @@ export var Logger = {
         insertExperimentLogEntry("CRQP4", requestNo + "\t" + getFullPlayerIdentification(name, "nameId") + "\t" + actualNewColor);
     },
 
-    // CRQC5
-    recordRequestCancelled: function(name, newColor, requestNo) {
-        var actualNewColor = ColorMagic.deanonymizeColor(name, newColor);
-        
-        insertExperimentLogEntry("CRQC5", requestNo + "\t" + getFullPlayerIdentification(name, "nameId") + "\t" + actualNewColor);
-    },
 
-    // ANOI1
-    recordAnonymizationInfo: function() {
-        var anonymizationInfo = "";
-        
-        for(var node in ColorMagic.node_permutation) {
-            if(ColorMagic.node_permutation.hasOwnProperty(node)) {
-                anonymizationInfo += getFullPlayerIdentification(node, "nodeId") + "\t";
-                var permutation = ColorMagic.colorPermutations[ColorMagic.node_permutation[node]];
-                for(var i = 0; i < permutation.length; i++) {
-                    anonymizationInfo += permutation[i] + '\t';
-                }
-                anonymizationInfo += '\n';
-            }
-        }
-        
-        // Remove the last "\n" character.
-        anonymizationInfo = anonymizationInfo.slice(0, anonymizationInfo.length - 1);
-        
-        insertExperimentLogEntry("ANOI1", anonymizationInfo);
-    },
 
     // MSGR1
     recordMessageRequest: function(userId, structured, message) {
