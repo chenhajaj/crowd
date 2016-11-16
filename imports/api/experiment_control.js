@@ -32,7 +32,7 @@ var proper, games, batches, batchSize;
 var runGames = function() {
     clearPastPilotExperimentsData();
 
-    /* Log entry.  TBD */ 
+    /* Log entry.  TBD */
     // Logger.recordExperimentInitializationStart();
 
     Participants.initializeFullListOfParticipants();
@@ -43,10 +43,10 @@ var runGames = function() {
 
     Time.updateTimeInfo('start experiment');
 
-    /* Log entry. TBD */ 
+    /* Log entry. TBD */
     // Logger.recordExperimentInitializationCompletion();
 
-    /* L */ 
+    /* L */
     Progress.setProgress('experiment', true);
 
     // run pre game
@@ -74,10 +74,10 @@ var runPreGame = function() {
 
     } else { // If this is the last game, end the sequence of games.
 
-        /* Log entry. TBD */ 
+        /* Log entry. TBD */
         // Logger.recordExperimentPayouts();
 
-        /* L */ 
+        /* L */
         Progress.setProgress('experiment', false);
 
         // If the sequence consisted of proper games, set the acquired bonus payments, and terminate the instance.
@@ -97,7 +97,7 @@ var runPreGame = function() {
 var runGame = function() {
     initializeGame();
 
-    /* L */ 
+    /* L */
     Progress.setProgress('session', true);
 
     /* assign participants into different batches */
@@ -133,10 +133,10 @@ export const terminateGame = function(outcome) {
     clearTimeout(sessionTimeout);
     clearInterval(sessionCountdown);
 
-    /* L TBD */ 
+    /* L TBD */
     // Session.getRankInfo(); /* Only top n participants can get bonus */
 
-    /* L TBD */ 
+    /* L TBD */
     // Payouts.applyBonusToParticipant(); /* give bonus to top n participants */
 
     Progress.setProgress('postSession', true);
@@ -174,7 +174,7 @@ var moveToWaitingRoom = function() {
     // if there are some idle participants remaining, move them to waiting room
     if(this.Participants.participantsQueue.length > this.Participants.participantsThreshold) {
         Meteor.users.update(
-            {isParticipant: true}, 
+            {isParticipant: true},
             {$set: {'location': '/waiting'}},
             {multi: true}
         );
@@ -185,14 +185,13 @@ var moveToWaitingRoom = function() {
 var initializeCollections = function() {
     Progress.initializeProgress();
     Session.initializeSessionInfo();
-}
+};
 
 
-
-var assignParticipantsIntoBatches: function() {
+var assignParticipantsIntoBatches = function () {
 	Participants.assignParticipantsIntoBatches();
 
-	/* Log entry TBD */ 
+	/* Log entry TBD */
     // Logger.recordParticipantsBatchId();
 }
 

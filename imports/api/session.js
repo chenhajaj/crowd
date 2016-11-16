@@ -17,9 +17,9 @@ export var Session = {
     sessionNumber: 0,   // current Session
     batchNumber: 0,  // number of batches
     batchSize: 5,   // tmp value
-    
 
-    batch_rank, {}, // batch_rank[batchId][userId] returns userId's rank
+
+    batch_rank: {}, // batch_rank[batchId][userId] returns userId's rank
     weights: {}, // participants' weights
     batch_id: {}, // batch_id[batchId] returns userIds of participants in it
    
