@@ -1,3 +1,6 @@
-
-
-import './game/*'
+import './game/game.html'
+import './game/game'
+import './game/gameScreen'
+import './game/gameScreen.html'
+import './game/scoreboard'
+import './game/scoreboard.html'
