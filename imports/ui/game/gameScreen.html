@@ -1,0 +1,16 @@
+<template name="gameScreen">
+    <div class="container-fluid">
+        <div class="row">
+            <div id="scoreboardContainer" class="col-lg-12">
+                {{#if displayScoreboard}}
+                    {{> scoreboard}}
+                {{/if}}
+            </div>
+        </div>
+        <div class="row">
+            <div id="gameContainer" class="col-lg-12">
+                {{> game}}
+            </div>
+        </div>
+    </div>
+</template>
