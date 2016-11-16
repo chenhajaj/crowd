@@ -21,7 +21,7 @@ export const startGames = function(isProperGames, numberOfGames, numberOfBatches
 };
 
 var sessionTimeout, preSessionCountdown, sessionCountdown, preSessionTimeout, postSessionTimeout;
-var proper, games, batches;, batchSize;
+var proper, games, batches, batchSize;
 
 
 var runGames = function() {
@@ -156,13 +156,12 @@ var movePlayersToSurvey = function() {
 var initializeCollections = function() {
     Progress.initializeProgress();
     Session.initializeSessionInfo();
-}
+};
 
 
-
-var assignParticipantsIntoBatches: function() {
+var assignParticipantsIntoBatches = function () {
 	Participants.assignParticipantsIntoBatches();
 	/* Log entry */ Logger.recordParticipantsBatchId();
-}
+};
 
 
