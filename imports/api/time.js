@@ -1,5 +1,4 @@
-
-import { Logger } from './logging.js';
+// import { Logger } from './logging.js';
 import { TimeInfo } from './collections/game_collections.js';
 import { Session } from './session.js';
 
@@ -16,7 +15,7 @@ export var Time = {
     postSessionLength: 5,
     timeUpdateRate: 1000,
 
-    waitForTurnTime: 10,    // Specifies the number of milliseconds after which a suspended annotation request will reattempt processing.
+    waitForTurnTime: 10,    // Specifies the number of milliseconds after which a suspended update-color request will reattempt processing.
 
     updateTimeInfo: function(context) {
         var time = new Date().getTime();
