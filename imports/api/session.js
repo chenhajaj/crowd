@@ -51,9 +51,9 @@ export var Session = {
             sessionNumber: 0,
             batchNumber: this.batchNumber
         }});
-       
-        initializeWeights();
-        initializeBatch_Id();
+
+        this.initializeWeights();
+        this.initializeBatch_Id();
     },
 
     incrementSessionNumber: function() {

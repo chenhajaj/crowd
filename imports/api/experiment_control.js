@@ -5,14 +5,15 @@ import { Progress } from './progress.js';
 import { Session } from './session.js';
 import { Parameters } from './parameters.js';
 import { Logger } from './logging.js';
+import {Tasks} from './tasks';
 
-export const startGames = function(isProperGames, numberOfGames, numberOfBatches, batchSize) {
+export const startGames = function (isProperGames, numberOfGames, numberOfBatches, batchSizeP) {
 	/* in each game participants are divided into numberOfBatches */
 
     proper = isProperGames;
     games = numberOfGames;
     batches = numberOfBatches;
-    batchSize = batchSiuze;
+    batchSize = batchSizeP;
 
     // Wait until all TurkServer collections data has been loaded.
     Meteor.setTimeout(function() {

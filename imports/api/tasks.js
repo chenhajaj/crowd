@@ -47,9 +47,9 @@ export var Tasks = {
     // this should be run 
     initializeTasks: function() {
         var _batchNumber = Session.batchNumber;
-        initializeTasksId();
-        initializeTasksAnnotation();
-        initializeBatchTasks(_batchNumber);
+        this.initializeTasksId();
+        this.initializeTasksAnnotation();
+        this.initializeBatchTasks(_batchNumber);
     }
 };
 

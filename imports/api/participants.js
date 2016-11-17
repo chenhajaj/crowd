@@ -43,7 +43,7 @@ export var Participants = {
            queue.push(user._id);
         });
 
-        initializeGameParticipants();
+        this.initializeGameParticipants();
 
         /* Log entry. */ Logger.recordExperimentParticipants(this.participantsQueue);
     },
