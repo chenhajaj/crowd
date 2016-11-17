@@ -56,7 +56,7 @@ export var Session = {
             sessionNumber: 0,
             batchNumber: this.batchNumber
         }});
-       
+
         this.initializeWeights();
         this.initializeBatch_Id();
     },
@@ -71,7 +71,7 @@ export var Session = {
 
 
     updateWeight: function(userId, weightInc) {
-        /* we currently don't need this */ 
+        /* we currently don't need this */
         var requestNo = this.requestToBeAssignedNext;
         this.requestToBeAssignedNext++;
       
@@ -80,7 +80,7 @@ export var Session = {
         /* async weight updating goes here! */
         this.weights[userId] /= Participants.numGamesParticipated[userId];
 
-        /* Log entry. TBD */ 
+        /* Log entry. TBD */
         // Logger.recordRequestMade(userId, weightInc, requestNo);
     },
 
@@ -99,7 +99,7 @@ export var Session = {
         	_userInBatch.reverse();
         	this.batch_rank[_batchId] = _userInBatch;
 
-        	/* Log entry. TBD */ 
+        	/* Log entry. TBD */
             // Logger.updateBatchRanking(_batchId, _userInBatch);
         }
     }
