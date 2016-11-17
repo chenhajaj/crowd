@@ -1,0 +1,21 @@
+<template name="login">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                {{> login_buttons}}
+            </div>
+        </div>
+
+    </div>
+</template>
+
+
+<template name="login_buttons">
+    <form id="login-form" action="action">
+        <div>
+            <input type="username" id="login-username" placeholder="username"/>
+            <input type="password" id="login-password" placeholder="password"/>
+            <input type="submit" id="login-button" value="Sign in"/>
+        </div>
+    </form>
+</template>

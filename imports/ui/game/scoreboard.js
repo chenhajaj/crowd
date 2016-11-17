@@ -4,6 +4,8 @@
 
 import {Session} from '../../api/session';
 import {Participants} from '../../api/participants'
+import './scoreboard.html'
+
 
 Template.scoreboard.helpers({
     "scores": function () {

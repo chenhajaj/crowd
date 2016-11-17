@@ -1,7 +1,7 @@
 /**
  * Created by alan on 9/13/2016.
  */
-
+import './game.html'
 Template.game.helpers({
     getImg1Src: function () {
         console.log('getting img 1 src');

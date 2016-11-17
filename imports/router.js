@@ -24,8 +24,7 @@ Router.configure({
 });
 
 Router.route('/', {
-    name: 'home',
-    template: 'outline',
+    name: 'landing'
 });
 
 Router.route('/adminScreen', {
