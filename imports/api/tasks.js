@@ -1,6 +1,9 @@
 // import { TurkServer } from 'meteor/mizzao'; ?
 import { Session } from './session.js';
-import { Logger } from './logging.js';
+
+/* TBD: logger.js needs to be modified later */
+// import { Logger } from './logging.js';
+
 import { ParticipantsInfo } from './collections/game_collections.js';
 import { Parameters } from './parameters.js';
 import { PilotExperiment } from './collections/external_collections.js';
@@ -47,15 +50,17 @@ export var Tasks = {
     // this should be run 
     initializeTasks: function() {
         var _batchNumber = Session.batchNumber;
-        initializeTasksId();
-        initializeTasksAnnotation();
-        initializeBatchTasks(_batchNumber);
+        /* how to handle exceptions? */
+        this.initializeTasksId();
+        this.initializeTasksAnnotation();
+        this.initializeBatchTasks(_batchNumber);
     }
 };
 
 var assignTasksToBatches = function() {
     // each batch will have a fixed number of tasks
     for ( var i = 0; i < Session.batchNumber; i++ ) {
+        /* in-place shuffle */
         Utilities.shuffle(this.tasksId);
         for ( var j = 0; j < this.numTasksEachBatch; j++ ) {
             this.batch_tasks[i].push(this.tasksId[j]);

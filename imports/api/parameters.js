@@ -2,7 +2,11 @@
 import { Participants } from './participants.js';
 import { Session } from './session.js';
 import { Payouts } from './payouts.js';
-import { Logger } from './logging.js';
+
+/* TBD */
+// import { Logger } from './logging.js';
+
+
 import { ParametersInfo } from './collections/game_collections.js';
 
 export var Parameters = {
