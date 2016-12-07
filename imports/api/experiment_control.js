@@ -188,8 +188,7 @@ var initializeCollections = function() {
 }
 
 
-
-var assignParticipantsIntoBatches: function() {
+var assignParticipantsIntoBatches = function () {
 	Participants.assignParticipantsIntoBatches();
 
 	/* Log entry TBD */ 

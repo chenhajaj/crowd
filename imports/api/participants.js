@@ -95,7 +95,7 @@ export var Participants = {
 
         console.log('done initializing participation');
 
-        /* Log entry. */ Logger.recordSessionParticipants(this.participants);
+        /* Log entry. */ //Logger.recordSessionParticipants(this.participants);
     },
 
     initializeMissedGames: function() {
@@ -154,7 +154,7 @@ var removeParticipant = function(userId) {
 };
 
 /* for each game we need to randomly assign participants into batches */
-var assignParticipantsIntoBatches: function() {
+var assignParticipantsIntoBatches = function () {
 
     //randomly shuffle array
     Utilities.shuffle(Participants.participants);
