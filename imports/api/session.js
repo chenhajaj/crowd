@@ -1,14 +1,15 @@
-import { Parameters } from './parameters.js';
-import { Participants } from './participants.js';
+import {Parameters} from './parameters.js';
+import {Participants} from './participants.js';
 
 /* To be modified, uncomment later */
 // import { Logger } from './logging.js';
 
 
-import { SessionInfo } from './collections/game_collections.js';
-import { Time } from './time.js';
-import { Progress } from './progress.js';
-import { terminateGame } from './experiment_control.js';
+import {SessionInfo} from './collections/game_collections.js';
+import {Time} from './time.js';
+import {Progress} from './progress.js';
+import {terminateGame} from './experiment_control.js';
+
 
 // includes Communcation Management
 export var Session = {
@@ -22,59 +23,65 @@ export var Session = {
     batch_rank: {}, // batch_rank[batchId][userId] returns userId's rank
     weights: {}, // participants' weights
     batch_id: {}, // batch_id[batchId] returns userIds of participants in it
-   
+
     bonusThreshold: 3,  // top bonusThreshold participants can obtain bonus
 
     requestToBeAssignedNext: 1,
     requestToBeProcessedNext: 1,
 
+    //TODO set this properly
+    stdWeightUpdate: 1,
     /* TBD */
-    checkResetBatch: function(isProperGames) {
-    	//
+    checkResetBatch: function (isProperGames) {
+        //
     },
 
-    initializeWeights: function() {
-    	for ( var i = 0; i < Participants.participantsQueue.length; i++ ) {
+    initializeWeights: function () {
+        for (var i = 0; i < Participants.participantsQueue.length; i++) {
             /* participantsQueue should already be initialized */
-    		var _userId = Participants.participantsQueue[i];
-    		this.weights[_userId] = 0;
-    	}
+            var _userId = Participants.participantsQueue[i];
+            this.weights[_userId] = 0;
+        }
     },
 
-	initializeBatch_Id: function() {
-		for ( var i = 0; i < this.batchNumber; i++ ) {
-			this.batch_id[i] = [];
-		}
-	},
+    initializeBatch_Id: function () {
+        for (var i = 0; i < this.batchNumber; i++) {
+            this.batch_id[i] = [];
+        }
+    },
 
-    initializeSessionInfo: function() {
+    initializeSessionInfo: function () {
         this.sessionNumber = 0;
         // calculate how many batches we will have
         this.batchNumber = Math.floor(Participants.participantsQueue.length / this.batchSize);
 
-        SessionInfo.upsert({id: 'global'}, { $set: {
-            sessionNumber: 0,
-            batchNumber: this.batchNumber
-        }});
+        SessionInfo.upsert({id: 'global'}, {
+            $set: {
+                sessionNumber: 0,
+                batchNumber: this.batchNumber
+            }
+        });
 
         this.initializeWeights();
         this.initializeBatch_Id();
     },
 
-    incrementSessionNumber: function() {
+    incrementSessionNumber: function () {
         this.sessionNumber++;
 
-        SessionInfo.update({id: 'global'}, {$set: {
-            sessionNumber: this.sessionNumber
-        }});
+        SessionInfo.update({id: 'global'}, {
+            $set: {
+                sessionNumber: this.sessionNumber
+            }
+        });
     },
 
 
-    updateWeight: function(userId, weightInc) {
+    updateWeight: function (userId, weightInc) {
         /* we currently don't need this */
         var requestNo = this.requestToBeAssignedNext;
         this.requestToBeAssignedNext++;
-      
+
         this.weights[userId] += weightInc;
         // userId's weight needs to be averaged ovr all games he/she participated
         /* async weight updating goes here! */
@@ -87,20 +94,82 @@ export var Session = {
 
     // we need to update participants' rankings after each image
     // this function should be run only after updating all participants' weights
-    updateRanking: function() {
-        for ( var i = 0; i < this.batchNumber; i++ ) {
-        	var _batchId = i;
-        	var _userInBatch = this.batch_id[_batchId];
-        	_userInBatch.sort(function(item){
-        		return this.weights[item];
-        	});
+    updateRanking: function () {
+        for (var i = 0; i < this.batchNumber; i++) {
+            var _batchId = i;
+            var _userInBatch = this.batch_id[_batchId];
+            _userInBatch.sort(function (item) {
+                return this.weights[item];
+            });
 
-        	// reverse the order
-        	_userInBatch.reverse();
-        	this.batch_rank[_batchId] = _userInBatch;
+            // reverse the order
+            _userInBatch.reverse();
+            this.batch_rank[_batchId] = _userInBatch;
 
-        	/* Log entry. TBD */
+            /* Log entry. TBD */
             // Logger.updateBatchRanking(_batchId, _userInBatch);
         }
+    },
+
+    /*
+     Class that is used to keep track of weights for a given task
+     */
+    WeightTracker: class {
+        //takes in a taskID, just in case we need it, this isn't necessary
+        constructor(taskID) {
+            //user responses is keyed on userID, values are responses
+            this.userResponses = {};
+            //responseUsers is keyed on responses, values are arrays of userIDs
+            this.responseUsers = {};
+            this.taskID = taskID;
+        }
+
+        //adds the response of user userID to this object
+        addResponse(userID, response) {
+            this.userResponses[userID] = response;
+            if (this.responseUsers[response]) {
+                this.responseUsers[response].push(userID);
+            } else {
+                this.responseUsers[response] = [userID];
+            }
+        }
+
+        //array of users who have responded
+        get doneUsers() {
+            return _.keys(this.userResponses)
+        }
+
+        //how many users have responded
+        get doneUsersCount() {
+            return this.doneUsers.length;
+        }
+
+        //returns an object with 2 attributes, 'right' and 'wrong'.
+        // Right users answered 'correctly', wrong users answered 'incorrectly'
+        //this is determined by _determineCorrectResponse method
+        getSortedUsers() {
+            let res = {};
+            let correct = this._determineCorrectResponse();
+            //res.correct is all the users in the correct response array
+            res.correct = this.responseUsers[correct];
+            let self = this;
+            //filter all doneUsers that didn't have correct as their response
+            res.incorrect = _.filter(this.doneUsers, (user) => {
+                return self.userResponses[user] != correct;
+            });
+
+            return res;
+        }
+
+        //determines the correct response for this task.
+        _determineCorrectResponse() {
+            let self = this;
+            //returns the response with the most users
+            return _.maxBy(_.keys(this.responseUsers), (response) => {
+                return self.responseUsers[response].length;
+            })
+        }
+
     }
 };
+
