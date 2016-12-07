@@ -1,6 +1,9 @@
 // import { TurkServer } from 'meteor/mizzao'; ?
 import { Session } from './session.js';
-import { Logger } from './logging.js';
+
+/* TBD */
+// import { Logger } from './logging.js';
+
 import { ParticipantsInfo } from './collections/game_collections.js';
 import { PilotExperiment } from './collections/external_collections.js';
 import { Utilities } from './util.js'
@@ -43,9 +46,10 @@ export var Participants = {
            queue.push(user._id);
         });
 
-        initializeGameParticipants();
+        this.initializeGameParticipants();
 
-        /* Log entry. */ Logger.recordExperimentParticipants(this.participantsQueue);
+        /* Log entry.  TBD */  
+        // Logger.recordExperimentParticipants(this.participantsQueue);
     },
 
 
@@ -170,17 +174,5 @@ var assignParticipantsIntoBatches: function() {
         }});
 
         Session.batch_id[_batchId].push(_id);
-    }
-};
-
-/* move all idle participants into waiting room */
-var moveToWaitingRoom = function() {
-    // if there are some idle participants remaining, move them to waiting room
-    if(this.Participants.participantsQueue.length > this.Participants.participantsThreshold) {
-        Meteor.users.update(
-            {isParticipant: true}, 
-            {$set: {'location': '/waiting'}},
-            {multi: true}
-        );
     }
 };

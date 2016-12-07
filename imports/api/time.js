@@ -39,7 +39,11 @@ export var Time = {
                 lastSessionEndTime: this.lastSessionEndTime,
                 currentTime: this.currentTime
             }});
-            /* Log entry. */ Logger.recordSessionCompletion(Session.sessionNumber);
+
+            /* Log entry. TBD */
+            // Logger.recordSessionCompletion(Session.sessionNumber);
+
+
         } else if (context == 'session start') {
             this.currentTime = time;
             this.currentSessionStartTime = time;
@@ -48,7 +52,10 @@ export var Time = {
                 currentSessionStartTime: this.currentSessionStartTime,
                 currentTime: this.currentTime
             }});
-            /* Log entry. */ Logger.recordSessionStart(Session.sessionNumber);
+
+            /* Log entry. TBD */  
+            //Logger.recordSessionStart(Session.sessionNumber);
+            
         } else if (context == 'current time') {
             TimeInfo.update({}, {$set: {
                 currentTime: this.currentTime

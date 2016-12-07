@@ -1,6 +1,10 @@
 import { Parameters } from './parameters.js';
 import { Participants } from './participants.js';
-import { Logger } from './logging.js';
+
+/* To be modified, uncomment later */
+// import { Logger } from './logging.js';
+
+
 import { SessionInfo } from './collections/game_collections.js';
 import { Time } from './time.js';
 import { Progress } from './progress.js';
@@ -31,6 +35,7 @@ export var Session = {
 
     initializeWeights: function() {
     	for ( var i = 0; i < Participants.participantsQueue.length; i++ ) {
+            /* participantsQueue should already be initialized */
     		var _userId = Participants.participantsQueue[i];
     		this.weights[_userId] = 0;
     	}
@@ -52,8 +57,8 @@ export var Session = {
             batchNumber: this.batchNumber
         }});
        
-        initializeWeights();
-        initializeBatch_Id();
+        this.initializeWeights();
+        this.initializeBatch_Id();
     },
 
     incrementSessionNumber: function() {
@@ -66,13 +71,17 @@ export var Session = {
 
 
     updateWeight: function(userId, weightInc) {
+        /* we currently don't need this */ 
         var requestNo = this.requestToBeAssignedNext;
         this.requestToBeAssignedNext++;
       
         this.weights[userId] += weightInc;
         // userId's weight needs to be averaged ovr all games he/she participated
+        /* async weight updating goes here! */
         this.weights[userId] /= Participants.numGamesParticipated[userId];
-        /* Log entry. */ Logger.recordRequestMade(userId, weightInc, requestNo);
+
+        /* Log entry. TBD */ 
+        // Logger.recordRequestMade(userId, weightInc, requestNo);
     },
 
 
@@ -89,7 +98,9 @@ export var Session = {
         	// reverse the order
         	_userInBatch.reverse();
         	this.batch_rank[_batchId] = _userInBatch;
-        	/* Log entry. */ Logger.updateBatchRanking(_batchId, _userInBatch);
+
+        	/* Log entry. TBD */ 
+            // Logger.updateBatchRanking(_batchId, _userInBatch);
         }
     }
 };

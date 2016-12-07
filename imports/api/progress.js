@@ -1,5 +1,9 @@
 import { Time } from './time.js';
-import { Logger } from './logging.js';
+
+/* TBD */
+// import { Logger } from './logging.js';
+
+
 import { ProgressInfo } from './collections/game_collections.js';
 
 export var Progress = {
@@ -31,9 +35,13 @@ export var Progress = {
                 experimentInProgress: progress
             }});
             if (progress) {
-                /* Log entry. */ Logger.recordExperimentStart();
+                /* TBD */
+                /* Log entry. */ 
+                // Logger.recordExperimentStart();
             } else {
-                /* Log entry. */ Logger.recordExperimentCompletion();
+                /* TBD */
+                /* Log entry. */ 
+                // Logger.recordExperimentCompletion();
             }
         } else if (type == 'session') {
             this.sessionInProgress = progress;

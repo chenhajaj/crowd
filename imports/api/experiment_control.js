@@ -4,7 +4,12 @@ import { Time } from './time.js';
 import { Progress } from './progress.js';
 import { Session } from './session.js';
 import { Parameters } from './parameters.js';
-import { Logger } from './logging.js';
+import { assignTasksToBatches } from './tasks.js '
+
+/* TBD */
+// import { Logger } from './logging.js';
+
+
 
 export const startGames = function(isProperGames, numberOfGames, numberOfBatches, batchSize) {
 	/* in each game participants are divided into numberOfBatches */
@@ -21,13 +26,14 @@ export const startGames = function(isProperGames, numberOfGames, numberOfBatches
 };
 
 var sessionTimeout, preSessionCountdown, sessionCountdown, preSessionTimeout, postSessionTimeout;
-var proper, games, batches;, batchSize;
+var proper, games, batches, batchSize;
 
 
 var runGames = function() {
     clearPastPilotExperimentsData();
 
-    /* Log entry. */ Logger.recordExperimentInitializationStart();
+    /* Log entry.  TBD */ 
+    // Logger.recordExperimentInitializationStart();
 
     Participants.initializeFullListOfParticipants();
     initializeCollections(); 
@@ -37,8 +43,11 @@ var runGames = function() {
 
     Time.updateTimeInfo('start experiment');
 
-    /* Log entry. */ Logger.recordExperimentInitializationCompletion();
-    /* L */ Progress.setProgress('experiment', true);
+    /* Log entry. TBD */ 
+    // Logger.recordExperimentInitializationCompletion();
+
+    /* L */ 
+    Progress.setProgress('experiment', true);
 
     // run pre game
     runPreGame();
@@ -64,9 +73,12 @@ var runPreGame = function() {
         }), Time.preSessionLength * Time.timeUpdateRate);
 
     } else { // If this is the last game, end the sequence of games.
-        /* Log entry. */ Logger.recordExperimentPayouts();
 
-        /* L */ Progress.setProgress('experiment', false);
+        /* Log entry. TBD */ 
+        // Logger.recordExperimentPayouts();
+
+        /* L */ 
+        Progress.setProgress('experiment', false);
 
         // If the sequence consisted of proper games, set the acquired bonus payments, and terminate the instance.
         if(proper) {            
@@ -85,7 +97,8 @@ var runPreGame = function() {
 var runGame = function() {
     initializeGame();
 
-    /* L */ Progress.setProgress('session', true);
+    /* L */ 
+    Progress.setProgress('session', true);
 
     /* assign participants into different batches */
     assignParticipantsIntoBatches();
@@ -109,7 +122,8 @@ var initializeGame = function() {
 
 	Participants.initializeGameParticipants();
     Session.incrementSessionNumber();
-    /* Log entry. */ Logger.recordSessionInitializationCompletion(Session.sessionNumber);
+    /* Log entry. TBD */
+    // Logger.recordSessionInitializationCompletion(Session.sessionNumber);
 };
 
 
@@ -119,8 +133,11 @@ export const terminateGame = function(outcome) {
     clearTimeout(sessionTimeout);
     clearInterval(sessionCountdown);
 
-    /* L */ Session.getRankInfo(); /* Only top n participants can get bonus */
-    /* L */ Payouts.applyBonusToParticipant(); /* give bonus to top n participants */
+    /* L TBD */ 
+    // Session.getRankInfo(); /* Only top n participants can get bonus */
+
+    /* L TBD */ 
+    // Payouts.applyBonusToParticipant(); /* give bonus to top n participants */
 
     Progress.setProgress('postSession', true);
 
@@ -152,6 +169,18 @@ var movePlayersToSurvey = function() {
     );
 };
 
+/* move all idle participants into waiting room */
+var moveToWaitingRoom = function() {
+    // if there are some idle participants remaining, move them to waiting room
+    if(this.Participants.participantsQueue.length > this.Participants.participantsThreshold) {
+        Meteor.users.update(
+            {isParticipant: true}, 
+            {$set: {'location': '/waiting'}},
+            {multi: true}
+        );
+    }
+};
+
 
 var initializeCollections = function() {
     Progress.initializeProgress();
@@ -162,7 +191,9 @@ var initializeCollections = function() {
 
 var assignParticipantsIntoBatches: function() {
 	Participants.assignParticipantsIntoBatches();
-	/* Log entry */ Logger.recordParticipantsBatchId();
+
+	/* Log entry TBD */ 
+    // Logger.recordParticipantsBatchId();
 }
 
 

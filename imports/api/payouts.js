@@ -3,7 +3,9 @@ import { Participants } from './participants.js';
 import { Utilities } from './util.js';
 import { PayoutInfo } from './collections/game_collections.js';
 import { Session } from './session.js';
-import { Logger } from './logging.js';
+
+/* TBD */
+// import { Logger } from './logging.js';
 
 export var Payouts = {
     PayoutInfo: PayoutInfo,
@@ -37,4 +39,5 @@ export var Payouts = {
 
 var assignPayout = function(payoutMultiplier, isAdversary) {
     /* TBD */
+    // trying to use turk-server to do this
 }

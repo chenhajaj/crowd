@@ -70,7 +70,7 @@ export const Utilities = {
     }
 
    	/* shuffle an array */ 
-	function shuffle(a) {
+	shuffle: function(a) {
 	    var j, x, i;
 	    for (i = a.length; i; i--) {
 	        j = Math.floor(Math.random() * i);
