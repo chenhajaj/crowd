@@ -4,7 +4,8 @@ import { Time } from './time.js';
 import { Progress } from './progress.js';
 import { Session } from './session.js';
 import { Parameters } from './parameters.js';
-import { assignTasksToBatches } from './tasks.js '
+import { Logger } from './logging.js';
+import {Tasks} from './tasks';
 
 /* TBD */
 //import { Logger } from './logging.js';import {Tasks} from './tasks';
