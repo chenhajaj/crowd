@@ -42,7 +42,9 @@ Meteor.methods({
             });
             Session.updateRanking();
         }
-        }
 
+        //TODO update task in db (uncomment this code)
+        //Tasks.TasksInfo.update(taskID, task);
+    }
 });
 

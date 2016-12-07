@@ -126,12 +126,15 @@ export var Session = {
 
         //adds the response of user userID to this object
         addResponse(userID, response) {
-            this.userResponses[userID] = response;
-            if (this.responseUsers[response]) {
-                this.responseUsers[response].push(userID);
-            } else {
-                this.responseUsers[response] = [userID];
+            if (!_.includes(this.doneUsers, userID)) {
+                //don't want to add a user twice
+                if (this.responseUsers[response]) {
+                    this.responseUsers[response].push(userID);
+                } else {
+                    this.responseUsers[response] = [userID];
+                }
             }
+            this.userResponses[userID] = response;
         }
 
         //array of users who have responded
