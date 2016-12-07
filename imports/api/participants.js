@@ -95,7 +95,7 @@ export var Participants = {
 
         console.log('done initializing participation');
 
-        /* Log entry. */ Logger.recordSessionParticipants(this.participants);
+        /* Log entry. */ //Logger.recordSessionParticipants(this.participants);
     },
 
     initializeMissedGames: function() {

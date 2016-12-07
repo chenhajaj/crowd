@@ -33,6 +33,6 @@ let clickOption = function (option) {
      with method
      */
     let taskID = 1;
-    Meteor.call('sendUserResponse', taskID, user, option);
+    Meteor.call('recordUserResponse', taskID, user, option);
 };
 

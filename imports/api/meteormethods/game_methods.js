@@ -8,6 +8,8 @@ import { Logger } from '../logging.js';
 import { Payouts } from '../payouts.js';
 import {Tasks} from '../tasks';
 
+let bar = {};
+
 Meteor.methods({
     /* update participant's annotation */
     updateAnnotation: function(newAnnotation) {
@@ -18,10 +20,13 @@ Meteor.methods({
     recordUserResponse: function (taskID, userID, response) {
         //get WeightTracker for the given task.
         let task = Tasks.TasksInfo.findOne(taskID);
+        if (!task) {
+            task = bar;
+        }
 
         //assuming task has a WeightTracker
         if (!task.weightTracker) {
-            task.weightTracker = Session.WeightTracker(taskID);
+            task.weightTracker = new Session.WeightTracker(taskID);
         }
         let wt = task.weightTracker;
         wt.addResponse(userID, response);
@@ -37,6 +42,7 @@ Meteor.methods({
             });
             Session.updateRanking();
         }
-    }
+        }
+
 });
 

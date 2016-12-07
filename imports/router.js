@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Admin } from './api/users.js';
 
 Router.configure({
-    loadingTemplate: 'loadingWheel',
+    // loadingTemplate: 'loadingWheel',
     onBeforeAction: function() {
         var currentUser = Meteor.userId();
         if(currentUser) {
