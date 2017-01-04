@@ -8,7 +8,9 @@ import { Logger } from '../logging.js';
 import { Payouts } from '../payouts.js';
 import {Tasks} from '../tasks';
 
-let bar = {};
+let bar = {
+    correctResponse: 1
+};
 
 Meteor.methods({
     /* update participant's annotation */
@@ -26,13 +28,18 @@ Meteor.methods({
 
         //assuming task has a WeightTracker
         if (!task.weightTracker) {
-            task.weightTracker = new Session.WeightTracker(taskID);
+            if (Progress.trainingInProgress) {
+                //TODO How do we get the correct response?
+                task.weightTracker = new Session.TrainingWeightTracker(taskID, task.correctResponse)
+            } else {
+                task.weightTracker = new Session.WeightTracker(taskID);
+            }
         }
         let wt = task.weightTracker;
         wt.addResponse(userID, response);
         //TODO Users per task?
         if (wt.doneUsersCount === 10) {
-            //woo we done
+
             let sortedUsers = wt.getSortedUsers();
             _.forEach(sortedUsers.correct, (userID) => {
                 Session.updateWeight(userID, Session.stdWeightUpdate);
@@ -47,4 +54,5 @@ Meteor.methods({
         //Tasks.TasksInfo.update(taskID, task);
     }
 });
+
 

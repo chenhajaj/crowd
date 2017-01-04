@@ -98,6 +98,7 @@ export var Session = {
         for (var i = 0; i < this.batchNumber; i++) {
             var _batchId = i;
             var _userInBatch = this.batch_id[_batchId];
+
             _userInBatch.sort(function (item) {
                 return this.weights[item];
             });
@@ -167,12 +168,28 @@ export var Session = {
         //determines the correct response for this task.
         _determineCorrectResponse() {
             let self = this;
-            //returns the response with the most users
+            //returns the response with weighted majority vote
+            //does so by calculating sum of user weights for each response
             return _.maxBy(_.keys(this.responseUsers), (response) => {
-                return self.responseUsers[response].length;
+                return _.sumBy(self.responseUsers[response], (userID) => {
+                    return Session.weights[userID];
+                });
             })
         }
+    },
 
+    TrainingWeightTracker: class extends this.WeightTracker {
+        constructor(taskID, correctResponse) {
+            super(taskID);
+            this.correctResponse = correctResponse;
+        }
+
+
+        //determines the correct response for this task.
+        _determineCorrectResponse() {
+            //returns the response with the most users
+            return this.correctResponse;
+        }
     }
 };
 
