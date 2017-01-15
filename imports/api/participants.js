@@ -64,14 +64,15 @@ export var Participants = {
 
     initializeGameParticipants: function(newSession) {
         // calculate how many participants we need
-        // participantsThreshold will make sure that we select exactly batchNumber * batchSize participants
-        this.participantsThreshold = Session.batchNumber * Session.batchSize;
+        // participantsThreshold will make sure that we select exactly numBatches * batchSize participants
+        this.participantsThreshold = Session.numBatches * Session.batchSize;
 
         if(this.participantsQueue.length < this.participantsThreshold) {
             // This should not happen, but it would be good if we have some plan B when not enough people show up.
             this.participants = this.participantsQueue;
         }
         else if (newSession) {
+            //TODO Should this remain commented out?
             // Kick out inactive participants (even those that are experiencing some issues)
             // removeInactiveParticipants();
             

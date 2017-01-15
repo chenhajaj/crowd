@@ -16,7 +16,7 @@ export var Session = {
     SessionInfo: SessionInfo,
 
     sessionNumber: 0,   // current Session
-    batchNumber: 0,  // number of batches
+    numBatches: 0,  // number of batches
     batchSize: 5,   // tmp value
 
 
@@ -29,7 +29,7 @@ export var Session = {
     requestToBeAssignedNext: 1,
     requestToBeProcessedNext: 1,
 
-    //TODO set this properly
+
     stdWeightUpdate: 1,
     /* TBD */
     checkResetBatch: function (isProperGames) {
@@ -45,7 +45,7 @@ export var Session = {
     },
 
     initializeBatch_Id: function () {
-        for (var i = 0; i < this.batchNumber; i++) {
+        for (var i = 0; i < this.numBatches; i++) {
             this.batch_id[i] = [];
         }
     },
@@ -53,12 +53,13 @@ export var Session = {
     initializeSessionInfo: function () {
         this.sessionNumber = 0;
         // calculate how many batches we will have
-        this.batchNumber = Math.floor(Participants.participantsQueue.length / this.batchSize);
+        //TODO change this so its always 1!
+        this.numBatches = Math.floor(Participants.participantsQueue.length / this.batchSize);
 
         SessionInfo.upsert({id: 'global'}, {
             $set: {
                 sessionNumber: 0,
-                batchNumber: this.batchNumber
+                numBatches: this.numBatches
             }
         });
 
@@ -95,7 +96,7 @@ export var Session = {
     // we need to update participants' rankings after each image
     // this function should be run only after updating all participants' weights
     updateRanking: function () {
-        for (var i = 0; i < this.batchNumber; i++) {
+        for (var i = 0; i < this.numBatches; i++) {
             var _batchId = i;
             var _userInBatch = this.batch_id[_batchId];
 

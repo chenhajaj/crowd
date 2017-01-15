@@ -14,8 +14,6 @@ import { Utilities } from './util.js';
 export var Tasks = {
     TasksInfo: TasksInfo,
 
-    // how many tasks for each batch
-    numTasksEachBatch: 150,
 
     // record all tasks' id
     tasksId: [],
@@ -49,7 +47,7 @@ export var Tasks = {
 
     // this should be run 
     initializeTasks: function() {
-        var _batchNumber = Session.batchNumber;
+        var _batchNumber = Session.numBatches;
         /* how to handle exceptions? */
         this.initializeTasksId();
         this.initializeTasksAnnotation();
@@ -59,10 +57,10 @@ export var Tasks = {
 
 var assignTasksToBatches = function() {
     // each batch will have a fixed number of tasks
-    for ( var i = 0; i < Session.batchNumber; i++ ) {
+    for (var i = 0; i < Session.numBatches; i++) {
         /* in-place shuffle */
         Utilities.shuffle(this.tasksId);
-        for ( var j = 0; j < this.numTasksEachBatch; j++ ) {
+        for (var j = 0; j < Parameters.numTasksEachBatch; j++) {
             this.batch_tasks[i].push(this.tasksId[j]);
         }
     }

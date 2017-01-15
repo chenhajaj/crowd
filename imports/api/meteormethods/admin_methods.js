@@ -102,6 +102,8 @@ Meteor.methods({
 var startExperiment = function() {
     // first start practice session
     startPilotPractice();
+    //TODO add training and real game calls here
+    //  *probably* just need to call startGanes with slightly different parameters
 }
 
 var startPilotPractice = function() {

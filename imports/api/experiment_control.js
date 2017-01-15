@@ -34,9 +34,13 @@ var runGames = function() {
     /* Log entry.  TBD */
     // Logger.recordExperimentInitializationStart();
 
+    //select participants, initialize values as needed
     Participants.initializeFullListOfParticipants();
-    initializeCollections(); 
-    Tasks.initializeTasks();
+
+    //sets up session,tasks, and progress databases
+    initializeCollections();
+
+
 
     Payouts.resetTotalPayouts(Participants.participantsQueue);
 
@@ -184,6 +188,7 @@ var moveToWaitingRoom = function() {
 var initializeCollections = function() {
     Progress.initializeProgress();
     Session.initializeSessionInfo();
+    Tasks.initializeTasks();
 };
 
 
