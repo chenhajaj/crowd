@@ -4,20 +4,19 @@ import { Time } from './time.js';
 import { Progress } from './progress.js';
 import { Session } from './session.js';
 import { Parameters } from './parameters.js';
-import { assignTasksToBatches } from './tasks.js '
+import { Logger } from './logging.js';
+import {Tasks} from './tasks';
 
 /* TBD */
-// import { Logger } from './logging.js';
+//import { Logger } from './logging.js';import {Tasks} from './tasks';
 
-
-
-export const startGames = function(isProperGames, numberOfGames, numberOfBatches, batchSize) {
+export const startGames = function (isProperGames, numberOfGames, numberOfBatches, batchSizeP) {
 	/* in each game participants are divided into numberOfBatches */
 
     proper = isProperGames;
     games = numberOfGames;
     batches = numberOfBatches;
-    batchSize = batchSiuze;
+    batchSize = batchSizeP;
 
     // Wait until all TurkServer collections data has been loaded.
     Meteor.setTimeout(function() {
@@ -32,23 +31,27 @@ var proper, games, batches, batchSize;
 var runGames = function() {
     clearPastPilotExperimentsData();
 
-    /* Log entry.  TBD */ 
+    /* Log entry.  TBD */
     // Logger.recordExperimentInitializationStart();
 
+    //select participants, initialize values as needed
     Participants.initializeFullListOfParticipants();
-    initializeCollections(); 
-    Tasks.initializeTasks();
+
+    //sets up session,tasks, and progress databases
+    initializeCollections();
+
+
 
     Payouts.resetTotalPayouts(Participants.participantsQueue);
 
     Time.updateTimeInfo('start experiment');
 
-    /* Log entry. TBD */ 
+    /* Log entry. TBD */
     // Logger.recordExperimentInitializationCompletion();
 
-    /* L */ 
+    /* L */
     Progress.setProgress('experiment', true);
-
+    //TODO move participants to game page here
     // run pre game
     runPreGame();
 };
@@ -74,10 +77,10 @@ var runPreGame = function() {
 
     } else { // If this is the last game, end the sequence of games.
 
-        /* Log entry. TBD */ 
+        /* Log entry. TBD */
         // Logger.recordExperimentPayouts();
 
-        /* L */ 
+        /* L */
         Progress.setProgress('experiment', false);
 
         // If the sequence consisted of proper games, set the acquired bonus payments, and terminate the instance.
@@ -97,7 +100,7 @@ var runPreGame = function() {
 var runGame = function() {
     initializeGame();
 
-    /* L */ 
+    /* L */
     Progress.setProgress('session', true);
 
     /* assign participants into different batches */
@@ -114,6 +117,8 @@ var runGame = function() {
 
     // Terminates the session once the full length of the session is up
     sessionTimeout = setTimeout(Meteor.bindEnvironment(function(){ terminateGame(false); }), Time.sessionLength * Time.timeUpdateRate);
+
+    //TODO this code should work if users are already on the game page, but that needs to happen
 };
 
 
@@ -133,10 +138,10 @@ export const terminateGame = function(outcome) {
     clearTimeout(sessionTimeout);
     clearInterval(sessionCountdown);
 
-    /* L TBD */ 
+    /* L TBD */
     // Session.getRankInfo(); /* Only top n participants can get bonus */
 
-    /* L TBD */ 
+    /* L TBD */
     // Payouts.applyBonusToParticipant(); /* give bonus to top n participants */
 
     Progress.setProgress('postSession', true);
@@ -174,7 +179,7 @@ var moveToWaitingRoom = function() {
     // if there are some idle participants remaining, move them to waiting room
     if(this.Participants.participantsQueue.length > this.Participants.participantsThreshold) {
         Meteor.users.update(
-            {isParticipant: true}, 
+            {isParticipant: true},
             {$set: {'location': '/waiting'}},
             {multi: true}
         );
@@ -185,13 +190,14 @@ var moveToWaitingRoom = function() {
 var initializeCollections = function() {
     Progress.initializeProgress();
     Session.initializeSessionInfo();
-}
+    Tasks.initializeTasks();
+};
 
 
 var assignParticipantsIntoBatches = function () {
 	Participants.assignParticipantsIntoBatches();
 
-	/* Log entry TBD */ 
+	/* Log entry TBD */
     // Logger.recordParticipantsBatchId();
 }
 

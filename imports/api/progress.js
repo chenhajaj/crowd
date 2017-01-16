@@ -13,6 +13,10 @@ export var Progress = {
     sessionInProgress: false,       // alias for sessionRunning
     preSessionInProgress: false,
     postSessionInProgress: false,
+    //training isn't mentioned anywhere, so I'm adding a thing here to 'track it
+    //TODO training?
+    trainingInProgress: false,
+
 
     clearProgress: function() {
         ProgressInfo.remove({});
@@ -65,4 +69,6 @@ export var Progress = {
             }});
         }
     }
+
+
 }

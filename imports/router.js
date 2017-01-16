@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Admin } from './api/users.js';
 
 Router.configure({
-    loadingTemplate: 'loadingWheel',
+    // loadingTemplate: 'loadingWheel',
     onBeforeAction: function() {
         var currentUser = Meteor.userId();
         if(currentUser) {
@@ -24,8 +24,7 @@ Router.configure({
 });
 
 Router.route('/', {
-    name: 'home',
-    template: 'outline',
+    name: 'landing'
 });
 
 Router.route('/adminScreen', {
@@ -101,7 +100,7 @@ Router.route('/survey', {
 
 Router.route('/experiment', {
     name: 'experiment',
-    template: 'experiment',
+    template: 'gameScreen',
     waitOn: function() {
         var currentUser = Meteor.userId();
         if (currentUser) {

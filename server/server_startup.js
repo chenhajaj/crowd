@@ -16,6 +16,7 @@ import '../imports/router.js';
 import '../imports/api/meteormethods/main.js';
 import '../imports/api/meteormethods/admin_methods.js';
 import '../imports/api/meteormethods/game_methods.js';
+// import '../imports/api/Fixtures/users';
 
 Meteor.startup(function () {
     clearData();
