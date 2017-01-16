@@ -14,7 +14,7 @@ import { Utilities } from './util.js';
 export var Tasks = {
     TasksInfo: TasksInfo,
 
-
+    //TODO Training task list needs to be set up
     // record all tasks' id
     tasksId: [],
 
@@ -23,7 +23,7 @@ export var Tasks = {
     tasks_annotation: {},
 
     // record tasks in each batch
-    // batch_tasks[someBatchId] returns all tasks in it 
+    // batch_tasks[someBatchId] returns all tasks in it (the IDs)
     batch_tasks: {},
 
     initializeTasksId: function() {

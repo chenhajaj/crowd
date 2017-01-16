@@ -13,7 +13,7 @@ Template.scoreboard.helpers({
         let myNeighbors = Session.batch_id[myBatchId];
         let scores = _.map(myNeighbors, function (uid) {
             return {
-                score: Session.weights[uid],
+                score: Session.trueWeights[uid],
                 userid: uid
             }
         });

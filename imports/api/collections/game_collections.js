@@ -17,5 +17,6 @@ export const SessionInfo = new Mongo.Collection('session');
 
 export const TimeInfo = new Mongo.Collection('time');
 
+//TODO Load in tasks info if needed
 export const TasksInfo = new Mongo.Collection('tasks');
 

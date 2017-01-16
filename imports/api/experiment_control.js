@@ -51,7 +51,7 @@ var runGames = function() {
 
     /* L */
     Progress.setProgress('experiment', true);
-
+    //TODO move participants to game page here
     // run pre game
     runPreGame();
 };
@@ -117,6 +117,8 @@ var runGame = function() {
 
     // Terminates the session once the full length of the session is up
     sessionTimeout = setTimeout(Meteor.bindEnvironment(function(){ terminateGame(false); }), Time.sessionLength * Time.timeUpdateRate);
+
+    //TODO this code should work if users are already on the game page, but that needs to happen
 };
 
 

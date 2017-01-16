@@ -19,9 +19,11 @@ Meteor.methods({
         Session.updateAnnotation(Meteor.userId(), newAnnotation);
     },
 
-    recordUserResponse: function (taskID, userID, response) {
+    recordUserResponse: function (userID, response) {
         //get WeightTracker for the given task.
+        let taskID = Session.getUserTaskID(userID);
         let task = Tasks.TasksInfo.findOne(taskID);
+        //TODO testing code, remove when not needed
         if (!task) {
             task = bar;
         }
@@ -37,8 +39,9 @@ Meteor.methods({
         }
         let wt = task.weightTracker;
         wt.addResponse(userID, response);
-        //TODO Users per task?
-        if (wt.doneUsersCount === 10) {
+        Session.updateUpperWeight(userID);
+        //assuming that after batchSize answers have come in, we're good
+        if (wt.doneUsersCount === Session.batchSize) {
 
             let sortedUsers = wt.getSortedUsers();
             _.forEach(sortedUsers.correct, (userID) => {
@@ -52,6 +55,19 @@ Meteor.methods({
 
         //TODO update task in db (uncomment this code)
         //Tasks.TasksInfo.update(taskID, task);
+    },
+
+    fetchTaskImageForUser: function (userID) {
+        //TODO have this return the image for the task this user is on
+    },
+
+    advanceUser: function (userID) {
+        //TODO flesh this out
+        /*
+         get the next task
+         if there isnt one, send them somewhere to wait
+         return the task image if there is
+         */
     }
 });
 
