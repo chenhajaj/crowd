@@ -51,6 +51,7 @@ Meteor.methods({
                 Session.updateWeight(userID, -1 * Session.stdWeightUpdate);
             });
             Session.updateRanking();
+            //TODO Add annotation to task
         }
 
         //TODO update task in db (uncomment this code)
@@ -61,12 +62,14 @@ Meteor.methods({
         //TODO have this return the image for the task this user is on
     },
 
+    //advances the user to the next task
     advanceUser: function (userID) {
         //TODO flesh this out
         /*
          get the next task
          if there isnt one, send them somewhere to wait
          return the task image if there is
+         Make sure that only the currently logged in user and admin can advance a user
          */
     }
 });

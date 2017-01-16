@@ -9,7 +9,7 @@ Template.game.helpers({
         console.log('getting img 1 src');
         return '/images/steam.jpg';
 
-
+        //TODO Load task image from server
     },
     getImg2Src: function () {
         console.log('getting img 2 src');
