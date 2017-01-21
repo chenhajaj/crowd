@@ -26,6 +26,7 @@ export var Tasks = {
     // batch_tasks[someBatchId] returns all tasks in it (the IDs)
     batch_tasks: {},
 
+
     initializeTasksId: function() {
         TasksInfo.find().forEach(function(item) {
             this.tasksId.push(item.id);
