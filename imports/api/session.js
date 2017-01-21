@@ -12,6 +12,83 @@ import {terminateGame} from './experiment_control.js';
 import {Tasks} from './tasks';
 
 
+class WeightTrackerClass {
+    //takes in a taskID, just in case we need it, this isn't necessary
+    constructor(taskID) {
+        //user responses is keyed on userID, values are responses
+        this.userResponses = {};
+        //responseUsers is keyed on responses, values are arrays of userIDs
+        this.responseUsers = {};
+        this.taskID = taskID;
+    }
+
+    //adds the response of user userID to this object
+    addResponse(userID, response) {
+        if (!_.includes(this.doneUsers, userID)) {
+            //don't want to add a user twice
+            if (this.responseUsers[response]) {
+                this.responseUsers[response].push(userID);
+            } else {
+                this.responseUsers[response] = [userID];
+            }
+        }
+        this.userResponses[userID] = response;
+    }
+
+    //array of users who have responded
+    get doneUsers() {
+        return _.keys(this.userResponses)
+    }
+
+    //how many users have responded
+    get doneUsersCount() {
+        return this.doneUsers.length;
+    }
+
+    //returns an object with 2 attributes, 'right' and 'wrong'.
+    // Right users answered 'correctly', wrong users answered 'incorrectly'
+    //this is determined by _determineCorrectResponse method
+    getSortedUsers() {
+        let res = {};
+        let correct = this._determineCorrectResponse();
+        //res.correct is all the users in the correct response array
+        res.correct = this.responseUsers[correct];
+        let self = this;
+        //filter all doneUsers that didn't have correct as their response
+        res.incorrect = _.filter(this.doneUsers, (user) => {
+            return self.userResponses[user] != correct;
+        });
+
+        return res;
+    }
+
+    //determines the correct response for this task.
+    _determineCorrectResponse() {
+        let self = this;
+        //returns the response with weighted majority vote
+        //does so by calculating sum of user weights for each response
+        return _.maxBy(_.keys(this.responseUsers), (response) => {
+            return _.sumBy(self.responseUsers[response], (userID) => {
+                return Session.trueWeights[userID];
+            });
+        })
+    }
+}
+
+class TrainingWeightTrackerClass extends WeightTrackerClass {
+    constructor(taskID, correctResponse) {
+        super(taskID);
+        this.correctResponse = correctResponse;
+    }
+
+
+    //determines the correct response for this task.
+    _determineCorrectResponse() {
+        //returns the response with the most users
+        return this.correctResponse;
+    }
+}
+
 // includes Communcation Management
 export var Session = {
     SessionInfo: SessionInfo,
@@ -134,84 +211,10 @@ export var Session = {
         return Tasks.batch_tasks[batchid][taskIndex];
     },
 
-    /*
-     Class that is used to keep track of weights for a given task
-     */
-    WeightTracker: class {
-        //takes in a taskID, just in case we need it, this isn't necessary
-        constructor(taskID) {
-            //user responses is keyed on userID, values are responses
-            this.userResponses = {};
-            //responseUsers is keyed on responses, values are arrays of userIDs
-            this.responseUsers = {};
-            this.taskID = taskID;
-        }
-
-        //adds the response of user userID to this object
-        addResponse(userID, response) {
-            if (!_.includes(this.doneUsers, userID)) {
-                //don't want to add a user twice
-                if (this.responseUsers[response]) {
-                    this.responseUsers[response].push(userID);
-                } else {
-                    this.responseUsers[response] = [userID];
-                }
-            }
-            this.userResponses[userID] = response;
-        }
-
-        //array of users who have responded
-        get doneUsers() {
-            return _.keys(this.userResponses)
-        }
-
-        //how many users have responded
-        get doneUsersCount() {
-            return this.doneUsers.length;
-        }
-
-        //returns an object with 2 attributes, 'right' and 'wrong'.
-        // Right users answered 'correctly', wrong users answered 'incorrectly'
-        //this is determined by _determineCorrectResponse method
-        getSortedUsers() {
-            let res = {};
-            let correct = this._determineCorrectResponse();
-            //res.correct is all the users in the correct response array
-            res.correct = this.responseUsers[correct];
-            let self = this;
-            //filter all doneUsers that didn't have correct as their response
-            res.incorrect = _.filter(this.doneUsers, (user) => {
-                return self.userResponses[user] != correct;
-            });
-
-            return res;
-        }
-
-        //determines the correct response for this task.
-        _determineCorrectResponse() {
-            let self = this;
-            //returns the response with weighted majority vote
-            //does so by calculating sum of user weights for each response
-            return _.maxBy(_.keys(this.responseUsers), (response) => {
-                return _.sumBy(self.responseUsers[response], (userID) => {
-                    return Session.trueWeights[userID];
-                });
-            })
-        }
-    },
-
-    TrainingWeightTracker: class extends this.WeightTracker {
-        constructor(taskID, correctResponse) {
-            super(taskID);
-            this.correctResponse = correctResponse;
-        }
-
-
-        //determines the correct response for this task.
-        _determineCorrectResponse() {
-            //returns the response with the most users
-            return this.correctResponse;
-        }
-    }
+    WeightTracker: WeightTrackerClass,
+    TrainingWeightTracker: TrainingWeightTrackerClass
 };
 
+/*
+ Class that is used to keep track of weights for a given task
+ */
