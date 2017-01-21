@@ -46,7 +46,7 @@ Meteor.methods({
         }
     },
 
-    // TODO: actually sort the output
+    // TODO: (NOT ALAN) actually sort the output
     getExperimentLog: function() {
         var adminId = Meteor.users.findOne({username: "admin"})._id;
         if(Meteor.userId() === adminId) {
